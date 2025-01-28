@@ -144,7 +144,6 @@
     }
       
 
-// new function chnages quote in every 8 second
 
 function changeQuote() {
       const randomIndex = Math.floor(Math.random() * quotes.length);
@@ -154,7 +153,7 @@ function changeQuote() {
       document.getElementById("author").textContent = `- ${randomQuote.author}`;
     }
 
-    // Automatically change the quote every 5 seconds
+    // Automatically change the quote every 8 seconds
     setInterval(changeQuote, 8000);
 
   </script>
