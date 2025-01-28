@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reminder Application</title>
+  <style>
+    body {
+        background-image: url('https://images.unsplash.com/photo-1592495981488-073153776d9a?q=80&w=1824&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+     background-size: cover;
+        font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 300px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      text-align: left;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    input {
+      background: #fff;
+      color: #333;
+    }
+
+    button {
+      background: #ff5733;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: auto;
+    }
+
+    button:hover {
+      background: #c44127;
+    }
+
+    .reminders {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .reminder-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+    
+  <div class="container">
+    <h1>Reminder App</h1>
+    <label for="reminder">Reminder:</label>
+    <input type="text" id="reminder" placeholder="Enter your reminder" required>
+
+    <label for="time">Date & Time:</label>
+    <input type="datetime-local" id="time" required>
+
+    <button onclick="addReminder()">Add Reminder</button>
+
+    <div class="reminders" id="reminders"></div>
+  </div>
+
+  <script>
+    const reminders = [];
+
+    function addReminder() {
+      const reminderText = document.getElementById('reminder').value;
+      const reminderTime = document.getElementById('time').value;
+
+      if (!reminderText || !reminderTime) {
+        alert("Please fill in both fields!");
+        return;
+      }
+
+      const reminder = {
+        text: reminderText,
+        time: new Date(reminderTime).getTime()
+      };
+
+      reminders.push(reminder);
+      displayReminders();
+      checkReminders();
+
+      document.getElementById('reminder').value = '';
+      document.getElementById('time').value = '';
+    }
+
+    function displayReminders() {
+      const remindersContainer = document.getElementById('reminders');
+      remindersContainer.innerHTML = '';
+      reminders.forEach((reminder, index) => {
+        const reminderItem = document.createElement('div');
+        reminderItem.className = 'reminder-item';
+        reminderItem.textContent = `${reminder.text} at ${new Date(reminder.time).toLocaleString()}`;
+        remindersContainer.appendChild(reminderItem);
+      });
+    }
+
+    function checkReminders() {
+      setInterval(() => {
+        const currentTime = new Date().getTime();
+        reminders.forEach((reminder, index) => {
+          if (currentTime >= reminder.time) {
+            alert(`Reminder: ${reminder.text}`);
+            reminders.splice(index, 1); // Remove the triggered reminder
+            displayReminders();
+          }
+        });
+      }, 1000);
+    }
+
+    // Start checking reminders when the page loads
+    checkReminders();
+  </script>
+</body>
+</html>
